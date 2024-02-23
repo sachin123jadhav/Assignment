@@ -331,8 +331,8 @@ const All = () => {
             </div>
 
             <div className="w-full lg:w-1/3 lg:pl-4 flex justify-end">
-              <button className="btn btn-dark btn-small mr-2">Submit</button>
-              <button className="btn btn-dark btn-small" onClick={handleRemoveFilter}>
+              <button className="btn btn-dark btn-xs mr-2">Search</button>
+              <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
                 Remove Filter
               </button>
             </div>
