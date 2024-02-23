@@ -77,13 +77,16 @@ export default function RootLayout({ children }) {
           width > 1280 ? switchHeaderClass() : ""
         }`}
       >
+                <Header />
         {/* md:min-h-screen will h-full*/}
         <div className="page-content flex   page-min-height  ">
+
           <div
             className={
               contentWidth === "boxed" ? "container mx-auto" : "container"
             }
           >
+           
             <motion.div
               key={location}
               initial="pageInitial"
@@ -109,13 +112,17 @@ export default function RootLayout({ children }) {
                 duration: 0.5,
               }}
             >
+            
               <Suspense fallback={<Loading />}>
                 
                 {children}
               </Suspense>
             </motion.div>
+        
           </div>
+    
         </div>
+        <Footer/>
       </div>
     </div>
   );

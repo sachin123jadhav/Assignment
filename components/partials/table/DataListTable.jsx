@@ -10,7 +10,7 @@ import {
 } from "react-table";
 import GlobalFilter from "./GlobalFilter";
 
-const BranchListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => {
+const DataListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => {
   const columns = useMemo(() => TABLE_COLUMNS, []);
   const data = useMemo(() => TABLE_ROWS, []);
 
@@ -50,7 +50,7 @@ const BranchListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => 
       <Card>
         <div className="md:flex justify-between items-center mb-4">
           <h4 className="card-title">{title}</h4>
-          <div> </div>
+          <div>  </div>
           <div className="flex">
             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
             {TableModal ? <TableModal edit={false} data={{}} /> : null}
@@ -76,7 +76,7 @@ const BranchListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => 
                             column.getSortByToggleProps()
                           )}
                           scope="col"
-                          className="table-th text-white text-base "
+                          className="table-th text-white text-sm "
                         >
                           {column.render("Header")}
                           <span>
@@ -210,4 +210,4 @@ const BranchListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => 
   );
 };
 
-export default BranchListTable;
+export default DataListTable;
