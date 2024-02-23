@@ -245,7 +245,7 @@ const All = () => {
 
 
       <Card>
-      <div className="space-y-4">
+        {/* <div className="space-y-4">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
             <div className="lg:w-1/3">
               <Textinput
@@ -292,6 +292,50 @@ const All = () => {
               </button>
             </div>
 
+          </form>
+          
+        </div> */}
+        <div className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-center">
+            <div className="lg:w-1/3">
+              <Textinput
+                name="title"
+                label="Movie title"
+                type="text"
+                register={register}
+                error={errors.companyname}
+                placeholder="Mission: Impossible – Fallout (2018)"
+                msgTooltip
+              />
+            </div>
+
+            <div className="lg:w-1/3 lg:pl-4">
+              <label className="form-label" htmlFor="mul_1">
+                Genres
+              </label>
+              <Select
+                name="geners"
+                isClearable={false}
+                defaultValue={[]}
+                styles={styles}
+                isMulti
+                options={generData?.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
+                register={register}
+                className="react-select ml-2"
+                classNamePrefix="select"
+                id="mul_1"
+              />
+            </div>
+
+            <div className="w-full lg:w-1/3 lg:pl-4 flex justify-end">
+              <button className="btn btn-dark btn-small mr-2">Submit</button>
+              <button className="btn btn-dark btn-small" onClick={handleRemoveFilter}>
+                Remove Filter
+              </button>
+            </div>
           </form>
         </div>
         <div className=" grid xl:grid-cols-2 grid-cols-1 gap-5">
