@@ -17,7 +17,7 @@ import * as yup from "yup";
 import Textinput from "@/components/ui/Textinput";
 import { Controller } from 'react-hook-form';
 import Badge from "../ui/Badge";
-
+import { useRouter } from 'next/router';
 
 console.log("dummy_data", dummy_data);
 
@@ -125,10 +125,11 @@ const TABLE_COLUMNS = [
 ];
 
 const All = () => {
-  const { control } = useForm();
+  // const { control } = useForm();
   const dispatch = useDispatch();
   // const router = useRouter();
   const [loader, setLoader] = useState(true);
+
   const [loader1, setLoader1] = useState(true);
   const [movieData, setMovieData] = useState([]);
   const [generData, setGenerData] = useState([]);
@@ -224,36 +225,48 @@ const All = () => {
 
     const filteredData = await getFilterDataSelector;
     console.log("getFilterDataSelector", filteredData)
-    setMovieData(filteredData)
+    if (filteredData) {
+      setMovieData(filteredData)
+    }
+
 
   };
 
+  const handleRemoveFilter = () => {
+    // router.reload();
+    dispatch(getMoviesData(setLoader));
 
+  };
   // console.log(TABLE_ROWS, TABLE_COLUMNS)
   return (
     <>
       {/* <ExamapleOne></ExamapleOne>; */}
-      <div className="lg:col-span-3 col-span-12">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Textinput
-            name="title"
-            label="Movie title"
-            type="text"
-            register={register}
-            error={errors.companyname}
-            placeholder="Mission: Impossible – Fallout (2018)"
-            msgTooltip
-          />
 
-          <div>
-            <div>
+
+
+      <Card>
+        <div className="lg:col-span-3 col-span-12">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
+            <div className="lg:w-1/3">
+              <Textinput
+                name="title"
+                label="Movie title"
+                type="text"
+                register={register}
+                error={errors.companyname}
+                placeholder="Mission: Impossible – Fallout (2018)"
+                msgTooltip
+              />
+            </div>
+
+            <div className="lg:w-1/3 lg:pl-4">
               <label className="form-label" htmlFor="mul_1">
                 Geners
               </label>
               <Select
                 name="geners"
                 isClearable={false}
-                defaultValue={[generData[2], generData[3]]}
+                defaultValue={[]}
                 styles={styles}
                 isMulti
 
@@ -269,15 +282,18 @@ const All = () => {
                 id="mul_1"
               />
             </div>
-          </div>
 
-          <div className="ltr:text-right rtl:text-left">
-            <button className="btn btn-dark  text-center">Submit</button>
-          </div>
+            <div className="ltr:text-right rtl:text-left lg:w-1/3 lg:pl-4">
+              <button className="btn btn-dark btn-small  text-center">Submit</button>
+            </div>
+            <div className="ltr:text-right rtl:text-left lg:w-1/3 lg:pl-4">
+              <button className="btn btn-dark btn-small text-center" onClick={handleRemoveFilter}>
+                Remove Filter
+              </button>
+            </div>
 
-        </form>
-      </div>
-      <Card>
+          </form>
+        </div>
         <div className=" grid xl:grid-cols-2 grid-cols-1 gap-5">
 
         </div>
