@@ -101,7 +101,7 @@ const StarterPage = () => {
       {/* <ExamapleOne></ExamapleOne>; */}
       <Card>
         <div className=" grid xl:grid-cols-2 grid-cols-1 gap-5">
-          <Card title="React Select"></Card>
+         
         </div>
 
         <DataListTable
