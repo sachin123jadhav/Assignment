@@ -10,11 +10,14 @@ import { FaStar } from "react-icons/fa";
 import moment from "moment";
 import Card from "@/components/ui/Card";
 import Select from "@/components/ui/Select";
-import { getMovieSelector, getMoviesData } from "@/store/moviesstore";
+import { getMovieSelector, getMoviesData, getGenerSelector, getGenerData, getFilterData, getFilterSelector } from "@/store/moviesstore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Textinput from "@/components/ui/Textinput";
+import { Controller } from 'react-hook-form';
+import Badge from "../ui/Badge";
+
 
 console.log("dummy_data", dummy_data);
 
@@ -122,15 +125,30 @@ const TABLE_COLUMNS = [
 ];
 
 const All = () => {
+  const { control } = useForm();
   const dispatch = useDispatch();
   // const router = useRouter();
   const [loader, setLoader] = useState(true);
+  const [loader1, setLoader1] = useState(true);
   const [movieData, setMovieData] = useState([]);
+  const [generData, setGenerData] = useState([]);
+  const [FilterData, setFilterData] = useState([]);
+  const getGenerDataSelector = useSelector(getGenerSelector);
   const getMovieDataSelector = useSelector(getMovieSelector);
+  const getFilterDataSelector = useSelector(getFilterSelector);
+
+
 
   useEffect(() => {
     dispatch(getMoviesData(setLoader));
+    dispatch(getGenerData(setLoader1));
+
   }, []);
+  useEffect(() => {
+    if (getGenerDataSelector) {
+      setGenerData(getGenerDataSelector);
+    }
+  }, [getGenerDataSelector]);
 
   useEffect(() => {
     if (getMovieDataSelector) {
@@ -138,11 +156,11 @@ const All = () => {
     }
   }, [getMovieDataSelector]);
 
-  // console.log("movieData", movieData)
+  // console.log("movieData", generData)
 
 
   const TABLE_ROWS = movieData.flatMap((entry) => {
-   
+
     const mainDate = moment(entry.date).format("YYYY MMM DD");
     // const mainDate = entry.date
     let isFirstMovie = true;
@@ -154,7 +172,19 @@ const All = () => {
         id: `${date}-${movieIndex}`,
         title: movie.title,
         poster: movie.poster,
-        genres: movie.genre ? movie.genre.map(genre => genre.name).join(", ") : "",
+        // genres: movie.genre ? movie.genre.map(genre => genre.name).join(", ") : "",
+        genres: (
+          <div>
+            {movie.genre && movie.genre.map((genre, index) => (
+              <Badge
+                key={index} // Make sure to provide a unique key for each Badge
+                label={genre.name}
+                className="bg-primary-500 text-white mr-2 mb-2" // Add your custom class here
+              />
+            ))}
+          </div>
+        ),
+
         rating: (
           <div className="text-start" style={{ minWidth: "190px" }}>
             <StarRatingComponent
@@ -175,7 +205,7 @@ const All = () => {
 
 
   const FormValidationSchema = yup.object({
-    
+
   });
 
   const {
@@ -186,10 +216,19 @@ const All = () => {
     resolver: yupResolver(FormValidationSchema),
 
   });
-  const onSubmit = (data) => {
-    console.log("data",data)
+
+
+  const onSubmit = async (data) => {
+    console.log("data", data.title, data.geners, data)
+    dispatch(getFilterData(setLoader, data.title, data.geners));
+
+    const filteredData = await getFilterDataSelector;
+    console.log("getFilterDataSelector", filteredData)
+    setMovieData(filteredData)
 
   };
+
+
   // console.log(TABLE_ROWS, TABLE_COLUMNS)
   return (
     <>
@@ -207,26 +246,31 @@ const All = () => {
           />
 
           <div>
-            <label htmlFor=" hh" className="form-label ">
-              Company Type
-            </label>
-            <Select
-              className="react-select"
-              classNamePrefix="select"
-              // defaultValue={companyType?.[0]}
-              //options={companyType?.map((item)=>item.company_type)}
-              // options={companyType?.map((item) => ({
-              //   value: item.id, // Assuming item.id is the ID of the company type
-              //   label: item.company_type,
-              //   // You can include other attributes as needed
-              // }))}
-              // value={companyType.map((item)=>item.company_type)}
-              styles={styles}
-              register={register}
-              name="compnaytype"
-              id="compnaytype"
-            />
+            <div>
+              <label className="form-label" htmlFor="mul_1">
+                Geners
+              </label>
+              <Select
+                name="geners"
+                isClearable={false}
+                defaultValue={[generData[2], generData[3]]}
+                styles={styles}
+                isMulti
+
+                options={generData?.map((item) => ({
+                  value: item.id, // Assuming item.id is the ID of the company type
+                  label: item.name,
+                  // You can include other attributes as needed
+                }))}
+
+                register={register}
+                className="react-select"
+                classNamePrefix="select"
+                id="mul_1"
+              />
+            </div>
           </div>
+
           <div className="ltr:text-right rtl:text-left">
             <button className="btn btn-dark  text-center">Submit</button>
           </div>
