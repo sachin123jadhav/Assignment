@@ -14,11 +14,28 @@ import { getMovieSelector, getMoviesData } from "@/store/moviesstore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Textinput from "@/components/ui/Textinput";
 
 console.log("dummy_data", dummy_data);
 
 
-
+const styles = {
+  multiValue: (base, state) => {
+    return state.data.isFixed ? { ...base, opacity: "0.5" } : base;
+  },
+  multiValueLabel: (base, state) => {
+    return state.data.isFixed
+      ? { ...base, color: "#626262", paddingRight: 6 }
+      : base;
+  },
+  multiValueRemove: (base, state) => {
+    return state.data.isFixed ? { ...base, display: "none" } : base;
+  },
+  option: (provided, state) => ({
+    ...provided,
+    fontSize: "14px",
+  }),
+};
 
 // const TABLE_ROWS = dummy_data.flatMap((entry) => {
 //   // const mainDate = entry.date;
@@ -121,11 +138,11 @@ const All = () => {
     }
   }, [getMovieDataSelector]);
 
-  console.log("movieData", movieData)
+  // console.log("movieData", movieData)
 
 
   const TABLE_ROWS = movieData.flatMap((entry) => {
-    console.log("entry", entry.date)
+   
     const mainDate = moment(entry.date).format("YYYY MMM DD");
     // const mainDate = entry.date
     let isFirstMovie = true;
@@ -170,10 +187,10 @@ const All = () => {
 
   });
   const onSubmit = (data) => {
-    console.log(data)
+    console.log("data",data)
 
   };
-  console.log(TABLE_ROWS, TABLE_COLUMNS)
+  // console.log(TABLE_ROWS, TABLE_COLUMNS)
   return (
     <>
       {/* <ExamapleOne></ExamapleOne>; */}
@@ -196,7 +213,7 @@ const All = () => {
             <Select
               className="react-select"
               classNamePrefix="select"
-              defaultValue={companyType?.[0]}
+              // defaultValue={companyType?.[0]}
               //options={companyType?.map((item)=>item.company_type)}
               // options={companyType?.map((item) => ({
               //   value: item.id, // Assuming item.id is the ID of the company type
