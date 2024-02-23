@@ -245,7 +245,7 @@ const All = () => {
 
 
       <Card>
-        <div className="lg:col-span-3 col-span-12">
+      <div className="space-y-4">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
             <div className="lg:w-1/3">
               <Textinput
