@@ -224,7 +224,7 @@ const All = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-row items-end gap-4 "
             >
-              <div className="basis-1/3 md:basis-1/3">
+              <div className="basis-1/3 md:basis-1/3 ">
                 <Textinput
                   name="title"
                   label="Movie title"
@@ -235,7 +235,7 @@ const All = () => {
                   msgTooltip
                 />
               </div>
-              <div className="basis-1/3 md:basis-1/3">
+              <div className="basis-1/3 md:basis-1/3 ">
                 <label className="form-label" htmlFor="mul_1">
                   Genres
                 </label>
@@ -259,7 +259,7 @@ const All = () => {
                   id="mul_1"
                 />
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-4 ">
                 <button className="h-12 px-4 rounded-md bg-primary-400  text-white dark:bg-black-900">
                   Search
                 </button>
