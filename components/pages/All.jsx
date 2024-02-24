@@ -9,7 +9,6 @@ import StarRatingComponent from "react-star-rating-component";
 import { FaStar } from "react-icons/fa";
 import moment from "moment";
 import Card from "@/components/ui/Card";
-import Select from "@/components/ui/Select";
 import { getMovieSelector, getMoviesData, getGenerSelector, getGenerData, getFilterData, getFilterSelector } from "@/store/moviesstore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,7 +17,8 @@ import Textinput from "@/components/ui/Textinput";
 import { Controller } from 'react-hook-form';
 import Badge from "../ui/Badge";
 import { useRouter } from 'next/router';
-
+import Select, { components } from "react-select";
+import PageLoader from "next/dist/client/page-loader";
 console.log("dummy_data", dummy_data);
 
 
@@ -39,37 +39,6 @@ const styles = {
     fontSize: "14px",
   }),
 };
-
-// const TABLE_ROWS = dummy_data.flatMap((entry) => {
-//   // const mainDate = entry.date;
-//   const mainDate = moment(entry.date).format("YYYY MMM DD");
-//   let isFirstMovie = true; // Flag to track if it's the first movie in the group
-//   return entry.movies.map((movie, movieIndex) => {
-//     const date = isFirstMovie ? mainDate : "";
-//     isFirstMovie = false; // Set flag to false after the first movie
-//     return {
-//       date,
-//       id: `${date}-${movieIndex}`,
-//       title: movie.title,
-//       poster: movie.poster,
-//       genres: movie.genre ? movie.genre.join(", ") : "",
-//       rating: (
-//         <div className="text-start" style={{ minWidth: "190px" }}>
-//           <StarRatingComponent
-//             name="rate2"
-//             editing={false}
-//             renderStarIcon={() => <FaStar />}
-//             starCount={10}
-//             value={movie.imdb_rating}
-//           />
-//         </div>
-//       ),
-//       yearRelease: movie.year,
-//       metacriticRating: movie.meta_score,
-//       runtime: movie.runtime,
-//     };
-//   });
-// });
 
 
 
@@ -125,15 +94,14 @@ const TABLE_COLUMNS = [
 ];
 
 const All = () => {
-  // const { control } = useForm();
+  const { reset } = useForm();
+  const { setValue } = useForm();
   const dispatch = useDispatch();
-  // const router = useRouter();
   const [loader, setLoader] = useState(true);
-
+  const [selectedfilters, setSelectdfilter] = useState('');
   const [loader1, setLoader1] = useState(true);
   const [movieData, setMovieData] = useState([]);
   const [generData, setGenerData] = useState([]);
-  const [FilterData, setFilterData] = useState([]);
   const getGenerDataSelector = useSelector(getGenerSelector);
   const getMovieDataSelector = useSelector(getMovieSelector);
   const getFilterDataSelector = useSelector(getFilterSelector);
@@ -157,7 +125,6 @@ const All = () => {
     }
   }, [getMovieDataSelector]);
 
-  // console.log("movieData", generData)
 
 
   const TABLE_ROWS = movieData.flatMap((entry) => {
@@ -219,83 +186,46 @@ const All = () => {
   });
 
 
-  const onSubmit = async (data) => {
-    console.log("data", data.title, data.geners, data)
-    dispatch(getFilterData(setLoader, data.title, data.geners));
+  const onSubmit = async (data, e) => {
 
+    dispatch(getFilterData(setLoader, data.title, selectedfilters));
     const filteredData = await getFilterDataSelector;
     console.log("getFilterDataSelector", filteredData)
     if (filteredData) {
       setMovieData(filteredData)
     }
-
-
   };
 
   const handleRemoveFilter = () => {
-    // router.reload();
     dispatch(getMoviesData(setLoader));
-
+    setValue("title", null);
+    setValue("geners", null);
+    reset();
+    // reset(); // Reset the form fields
   };
+
+
+  const handleGroupChange = (selectedOptions) => {
+    const selectedGenreIds = selectedOptions.map(option => option.value);
+    // const selectedGenreNames = selectedOptions.map(option => option.label).join(', ');
+    // Set the comma-separated string to state
+    setSelectdfilter(selectedGenreIds);
+    // console.log(selectedGenreIds);
+    // console.log("selectedfilters", selectedfilters);
+  };
+
+  useEffect(() => {
+    // console.log("selectedfilters", selectedfilters);
+  }, [selectedfilters]);
+  useEffect(() => {
+    // console.log("selectedfilters", selectedfilters);
+  }, [movieData]);
   // console.log(TABLE_ROWS, TABLE_COLUMNS)
   return (
     <>
-      {/* <ExamapleOne></ExamapleOne>; */}
-
-
 
       <Card>
-        {/* <div className="space-y-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row">
-            <div className="lg:w-1/3">
-              <Textinput
-                name="title"
-                label="Movie title"
-                type="text"
-                register={register}
-                error={errors.companyname}
-                placeholder="Mission: Impossible – Fallout (2018)"
-                msgTooltip
-              />
-            </div>
-
-            <div className="lg:w-1/3 lg:pl-4">
-              <label className="form-label" htmlFor="mul_1">
-                Geners
-              </label>
-              <Select
-                name="geners"
-                isClearable={false}
-                defaultValue={[]}
-                styles={styles}
-                isMulti
-
-                options={generData?.map((item) => ({
-                  value: item.id, // Assuming item.id is the ID of the company type
-                  label: item.name,
-                  // You can include other attributes as needed
-                }))}
-
-                register={register}
-                className="react-select"
-                classNamePrefix="select"
-                id="mul_1"
-              />
-            </div>
-
-            <div className="ltr:text-right rtl:text-left lg:w-1/3 lg:pl-4">
-              <button className="btn btn-dark btn-small  text-center">Submit</button>
-            </div>
-            <div className="ltr:text-right rtl:text-left lg:w-1/3 lg:pl-4">
-              <button className="btn btn-dark btn-small text-center" onClick={handleRemoveFilter}>
-                Remove Filter
-              </button>
-            </div>
-
-          </form>
-          
-        </div> */}
-        <div className="space-y-4">
+        <div className="space-y-4 mb-4">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-center">
             <div className="lg:w-1/3">
               <Textinput
@@ -308,7 +238,6 @@ const All = () => {
                 msgTooltip
               />
             </div>
-
             <div className="lg:w-1/3 lg:pl-4">
               <label className="form-label" htmlFor="mul_1">
                 Genres
@@ -323,13 +252,15 @@ const All = () => {
                   value: item.id,
                   label: item.name,
                 }))}
+                isSearchable={true}
+                placeholder="Search options..."
                 register={register}
+                onChange={handleGroupChange}
                 className="react-select ml-2"
                 classNamePrefix="select"
                 id="mul_1"
               />
             </div>
-
             <div className="w-full lg:w-1/3 lg:pl-4 flex justify-end">
               <button className="btn btn-dark btn-xs mr-2">Search</button>
               <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
@@ -342,11 +273,11 @@ const All = () => {
 
         </div>
         {loader ? "loading......" : TABLE_ROWS && TABLE_COLUMNS && (
-
           <DataListTable
             TABLE_COLUMNS={TABLE_COLUMNS}
             TABLE_ROWS={TABLE_ROWS}
             pageSize="5"
+
           ></DataListTable>
 
         )}
