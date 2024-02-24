@@ -260,11 +260,11 @@ const All = () => {
                 />
               </div>
               <div className="flex gap-4">
-                <button className="h-12 px-4 rounded-md btn-dark ">
+                <button className="h-12 px-4 rounded-md btn-primary ">
                   Search
                 </button>
                 <button
-                  className="h-12 px-4 rounded-md btn-dark "
+                  className="h-12 px-4 rounded-md btn-primary"
                   onClick={handleRemoveFilter}
                   type="button"
                 >
