@@ -48,7 +48,7 @@ const DataListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => {
   return (
     <>
       <Card>
-        <div className="md:flex justify-between items-center mb-4">
+        <div className="md:flex justify-between items-center mb-4 rounded-lg">
           <h4 className="card-title">{title}</h4>
           <div>  </div>
           <div className="flex">
@@ -63,7 +63,7 @@ const DataListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => {
                 className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
                 {...getTableProps}
               >
-                <thead className="bg-sky-800  dark:bg-slate-700">
+                <thead className="bg-primary-400  dark:bg-slate-700 rounded-lg">
                   {headerGroups.map((headerGroup) => (
                     <tr
                       key={headerGroup.id}
@@ -171,7 +171,7 @@ const DataListTable = ({ title, TABLE_COLUMNS, TABLE_ROWS, TableModal,  }) => {
                   aria-current="page"
                   className={` ${
                     pageIdx === pageIndex
-                      ? "bg-green-900 dark:bg-slate-600  dark:text-slate-200 text-white font-medium"
+                      ? "bg-primary-400 dark:bg-slate-600  dark:text-slate-200 text-white font-medium"
                       : "bg-slate-100 dark:bg-slate-700 dark:text-slate-400 text-black-500  font-normal  "
                   }    text-sm rounded leading-[16px] flex h-6 w-6 items-center justify-center transition-all duration-150`}
                   onClick={() => gotoPage(pageIdx)}

@@ -139,7 +139,7 @@ const All = () => {
               <Badge
                 key={index} // Make sure to provide a unique key for each Badge
                 label={genre.name}
-                className="bg-primary-500 text-white mr-2 mb-2" // Add your custom class here
+                className="bg-primary-400 text-white mr-2 mb-2" // Add your custom class here
               />
             ))}
           </div>
@@ -219,7 +219,7 @@ const All = () => {
 
       <Card>
         <Card >
-          <div className="space-y-4 mb-4">
+          <div className="space-y-4 mb-4 rounded-md">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-row items-end gap-4 "
@@ -260,11 +260,11 @@ const All = () => {
                 />
               </div>
               <div className="flex gap-4">
-                <button className="h-12 px-4 rounded-md btn-primary ">
+                <button className="h-12 px-4 rounded-md bg-primary-400  text-white dark:bg-black-900">
                   Search
                 </button>
                 <button
-                  className="h-12 px-4 rounded-md btn-primary"
+                  className="h-12 px-4 rounded-md bg-primary-400 text-white dark:bg-black-900"
                   onClick={handleRemoveFilter}
                   type="button"
                 >
@@ -278,7 +278,12 @@ const All = () => {
 
 
         </div>
-        {loader ? "loading......" : TABLE_ROWS && TABLE_COLUMNS && (
+        {loader ? <div class='flex space-x-2 justify-center items-center bg-white h-screen dark:invert'>
+          <span class='sr-only'>Loading...</span>
+          <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+          <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+          <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+        </div> : TABLE_ROWS && TABLE_COLUMNS && (
           <DataListTable
             TABLE_COLUMNS={TABLE_COLUMNS}
             TABLE_ROWS={TABLE_ROWS}
