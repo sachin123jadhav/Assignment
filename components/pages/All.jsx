@@ -94,8 +94,8 @@ const TABLE_COLUMNS = [
 ];
 
 const All = () => {
-  const { reset } = useForm();
-  const { setValue } = useForm();
+ 
+
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(true);
   const [selectedfilters, setSelectdfilter] = useState('');
@@ -105,8 +105,6 @@ const All = () => {
   const getGenerDataSelector = useSelector(getGenerSelector);
   const getMovieDataSelector = useSelector(getMovieSelector);
   const getFilterDataSelector = useSelector(getFilterSelector);
-
-
 
   useEffect(() => {
     dispatch(getMoviesData(setLoader));
@@ -177,9 +175,12 @@ const All = () => {
   });
 
   const {
+    reset,
+    setValue,
     register,
     formState: { errors },
     handleSubmit,
+    control
   } = useForm({
     resolver: yupResolver(FormValidationSchema),
 
@@ -197,21 +198,25 @@ const All = () => {
   };
 
   const handleRemoveFilter = () => {
-    dispatch(getMoviesData(setLoader));
+    // dispatch(getMoviesData(setLoader));
     setValue("title", null);
     setValue("geners", null);
+    setValue("geners", []);
+
     reset();
     // reset(); // Reset the form fields
   };
-
+  const handleClearForm = (e) => {
+    console.log(geners)
+    reset(); // Reset all form fields
+    setValue("geners", []);
+  };
 
   const handleGroupChange = (selectedOptions) => {
     const selectedGenreIds = selectedOptions.map(option => option.value);
-    // const selectedGenreNames = selectedOptions.map(option => option.label).join(', ');
-    // Set the comma-separated string to state
+
     setSelectdfilter(selectedGenreIds);
-    // console.log(selectedGenreIds);
-    // console.log("selectedfilters", selectedfilters);
+
   };
 
   useEffect(() => {
@@ -267,6 +272,7 @@ const All = () => {
                 Remove Filter
               </button>
             </div>
+
           </form>
         </div>
         <div className=" grid xl:grid-cols-2 grid-cols-1 gap-5">
