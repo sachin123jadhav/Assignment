@@ -111,6 +111,11 @@ const All = () => {
   }, [getMovieDataSelector]);
 
 
+  useEffect(()=>{
+    if (getFilterDataSelector) {
+      setMovieData(getFilterDataSelector);
+    }
+  },[getFilterDataSelector])
 
   const TABLE_ROWS = movieData.flatMap((entry) => {
 
@@ -177,15 +182,16 @@ const All = () => {
   const onSubmit = async (data, e) => {
 
     dispatch(getFilterData(setLoader, data.title, selectedfilters));
-    const filteredData = await getFilterDataSelector;
-    console.log("getFilterDataSelector", filteredData)
-    if (filteredData) {
-      setMovieData(filteredData)
-    }
+    // const filteredData = await getFilterDataSelector;
+    // console.log("getFilterDataSelector", filteredData)
+    // if (filteredData) {
+    //   setMovieData(filteredData)
+    // }
   };
 
   const handleRemoveFilter = () => {
-    // dispatch(getMoviesData(setLoader));
+    dispatch(getMoviesData(setLoader));
+    console.log("movieData")
     setValue("title", null);
     setValue("geners", null);
     setValue("geners", []);
@@ -193,11 +199,7 @@ const All = () => {
     reset();
     // reset(); // Reset the form fields
   };
-  const handleClearForm = (e) => {
-    console.log(geners)
-    reset(); // Reset all form fields
-    setValue("geners", []);
-  };
+
 
   const handleGroupChange = (selectedOptions) => {
     const selectedGenreIds = selectedOptions.map(option => option.value);
@@ -207,12 +209,12 @@ const All = () => {
   };
 
   useEffect(() => {
-    // console.log("selectedfilters", selectedfilters);
+    console.log("selectedfilters", selectedfilters);
   }, [selectedfilters]);
   useEffect(() => {
-    // console.log("selectedfilters", selectedfilters);
+    console.log("selectedfilters", selectedfilters);
   }, [movieData]);
-  // console.log(TABLE_ROWS, TABLE_COLUMNS)
+ 
   return (
     <>
 
@@ -254,8 +256,8 @@ const All = () => {
                   id="mul_1"
                 />
               </div>
-              <div >
-                <button className="btn btn-dark btn-xs mr-2">Search</button>
+              <div className="left">
+                <button className="btn btn-dark btn-xs mr-2 ">Search</button>
                 <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
                   Remove Filter
                 </button>
