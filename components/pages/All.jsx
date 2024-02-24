@@ -85,7 +85,7 @@ const All = () => {
 
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(true);
-  const [selectedfilters, setSelectdfilter] = useState('');
+  const [selectedfilters, setSelectdfilter] = useState([]);
   const [selectedname, setselectedname] = useState([]);
   const [loader1, setLoader1] = useState(true);
   const [movieData, setMovieData] = useState([]);
@@ -182,7 +182,7 @@ const All = () => {
 
 
   const onSubmit = async (data, e) => {
-    const selectedGenreIds = selectedfilters.map(option => option.value);
+    const selectedGenreIds = selectedfilters?.map(option => option.value);
     dispatch(getFilterData(setLoader, data.title, selectedGenreIds));
   };
 
