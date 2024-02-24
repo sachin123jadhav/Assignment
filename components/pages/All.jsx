@@ -86,6 +86,7 @@ const All = () => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(true);
   const [selectedfilters, setSelectdfilter] = useState('');
+  const [selectedname, setselectedname] = useState([]);
   const [loader1, setLoader1] = useState(true);
   const [movieData, setMovieData] = useState([]);
   const [generData, setGenerData] = useState([]);
@@ -98,6 +99,7 @@ const All = () => {
     dispatch(getGenerData(setLoader1));
 
   }, []);
+  console.log("generData",generData)
   useEffect(() => {
     if (getGenerDataSelector) {
       setGenerData(getGenerDataSelector);
@@ -180,31 +182,28 @@ const All = () => {
 
 
   const onSubmit = async (data, e) => {
-
-    dispatch(getFilterData(setLoader, data.title, selectedfilters));
-    // const filteredData = await getFilterDataSelector;
-    // console.log("getFilterDataSelector", filteredData)
-    // if (filteredData) {
-    //   setMovieData(filteredData)
-    // }
+    const selectedGenreIds = selectedfilters.map(option => option.value);
+    dispatch(getFilterData(setLoader, data.title, selectedGenreIds));
   };
 
   const handleRemoveFilter = () => {
     dispatch(getMoviesData(setLoader));
+    setSelectdfilter([]);
+    setselectedname([])
     console.log("movieData")
     setValue("title", null);
     setValue("geners", null);
     setValue("geners", []);
-
     reset();
-    // reset(); // Reset the form fields
   };
 
 
   const handleGroupChange = (selectedOptions) => {
-    const selectedGenreIds = selectedOptions.map(option => option.value);
-
-    setSelectdfilter(selectedGenreIds);
+    // const selectedGenreIds = selectedOptions.map(option => option.value);
+    // const selectedGenreValue = selectedOptions.map(option => option.name);
+    // setselectedname(selectedGenreValue)
+    // setSelectdfilter(selectedGenreIds);
+      setSelectdfilter(selectedOptions)
 
   };
 
@@ -221,8 +220,8 @@ const All = () => {
       <Card>
         <Card >
           <div className="space-y-4 mb-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-rows-3 grid-flow-col gap-4" >
-              <div>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-row " >
+              <div className="basis-1/3 md:basis-1/3"> 
                 <Textinput
                   name="title"
                   label="Movie title"
@@ -233,14 +232,15 @@ const All = () => {
                   msgTooltip
                 />
               </div>
-              <div >
+              <div  className="basis-1/3 md:basis-1/3">
                 <label className="form-label" htmlFor="mul_1">
                   Genres
                 </label>
                 <Select
                   name="geners"
                   isClearable={false}
-                  defaultValue={[]}
+                  defaultValue={[generData[0]]}
+                  value={selectedfilters}
                   styles={styles}
                   isMulti
                   options={generData?.map((item) => ({
@@ -256,9 +256,9 @@ const All = () => {
                   id="mul_1"
                 />
               </div>
-              <div className="left">
-                <button className="btn btn-dark btn-xs mr-2 ">Search</button>
-                <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
+              <div  className="basis-1/6 md:basis-1/3 flex mr-2 ">
+                <button className="btn btn-dark ">Search</button>
+                <button className="btn btn-dark" onClick={handleRemoveFilter} type="button">
                   Remove Filter
                 </button>
               </div>
