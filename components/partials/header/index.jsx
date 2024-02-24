@@ -99,7 +99,7 @@ const Header = ({ className = "custom-class" }) => {
           {/* For Horizontal  */}
           {menuType === "horizontal" && (
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
-              <Logo />
+              {/* <Logo /> */}
               {/* open mobile menu handlaer*/}
               {width <= breakpoints.xl && (
                 <div
