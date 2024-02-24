@@ -58,19 +58,6 @@ const TABLE_COLUMNS = [
     Header: "Movie Title",
     accessor: "title",
   },
-
-  // {
-  //   Header: "Movie Details",
-  //   accessor: "details",
-  //   Cell: ({ row: { original } }) => (
-  //     <div style={{ display: "flex", alignItems: "center" }}>
-  //       <div style={{ marginRight: "10px" }}>
-  //         <img src={original.poster} alt="Poster" style={{ width: "50px", height: "auto" }} />
-  //       </div>
-  //       <div style={{flex:"1"}}>{original.title}</div>
-  //     </div>
-  //   ),
-  // },
   {
     Header: "Genre(s)",
     accessor: "genres",
@@ -94,7 +81,7 @@ const TABLE_COLUMNS = [
 ];
 
 const All = () => {
- 
+
 
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(true);
@@ -230,52 +217,55 @@ const All = () => {
     <>
 
       <Card>
-        <div className="space-y-4 mb-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-wrap items-center">
-            <div className="lg:w-1/3">
-              <Textinput
-                name="title"
-                label="Movie title"
-                type="text"
-                register={register}
-                error={errors.companyname}
-                placeholder="Mission: Impossible – Fallout (2018)"
-                msgTooltip
-              />
-            </div>
-            <div className="lg:w-1/3 lg:pl-4">
-              <label className="form-label" htmlFor="mul_1">
-                Genres
-              </label>
-              <Select
-                name="geners"
-                isClearable={false}
-                defaultValue={[]}
-                styles={styles}
-                isMulti
-                options={generData?.map((item) => ({
-                  value: item.id,
-                  label: item.name,
-                }))}
-                isSearchable={true}
-                placeholder="Search options..."
-                register={register}
-                onChange={handleGroupChange}
-                className="react-select ml-2"
-                classNamePrefix="select"
-                id="mul_1"
-              />
-            </div>
-            <div className="w-full lg:w-1/3 lg:pl-4 flex justify-end">
-              <button className="btn btn-dark btn-xs mr-2">Search</button>
-              <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
-                Remove Filter
-              </button>
-            </div>
+        <Card >
+          <div className="space-y-4 mb-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-rows-3 grid-flow-col gap-4" >
+              <div>
+                <Textinput
+                  name="title"
+                  label="Movie title"
+                  type="text"
+                  register={register}
+                  error={errors.companyname}
+                  placeholder="Mission: Impossible – Fallout (2018)"
+                  msgTooltip
+                />
+              </div>
+              <div >
+                <label className="form-label" htmlFor="mul_1">
+                  Genres
+                </label>
+                <Select
+                  name="geners"
+                  isClearable={false}
+                  defaultValue={[]}
+                  styles={styles}
+                  isMulti
+                  options={generData?.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                  }))}
+                  isSearchable={true}
+                  placeholder="Search options..."
+                  register={register}
+                  onChange={handleGroupChange}
+                  className="react-select ml-2"
+                  classNamePrefix="select"
+                  id="mul_1"
+                />
+              </div>
+              <div >
+                <button className="btn btn-dark btn-xs mr-2">Search</button>
+                <button className="btn btn-dark btn-xs" onClick={handleRemoveFilter}>
+                  Remove Filter
+                </button>
+              </div>
 
-          </form>
-        </div>
+            </form>
+          </div>
+        </Card>
         <div className=" grid xl:grid-cols-2 grid-cols-1 gap-5">
+
 
         </div>
         {loader ? "loading......" : TABLE_ROWS && TABLE_COLUMNS && (
